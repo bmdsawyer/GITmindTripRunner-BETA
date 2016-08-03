@@ -7,10 +7,9 @@
 /[Ll]ibrary/
 sysinfo.txt
 *.stackdump
- 
-# ===================================== #
-# Visual Studio / MonoDevelop generated #
-# ===================================== #
+# ============================================= #
+# Visual Studio / MonoDevelop / Rider generated #
+# ============================================= #
 [Ee]xported[Oo]bj/
 .vs/
 /*.userprefs
@@ -21,7 +20,7 @@ sysinfo.txt
 /*.user
 /*.unityproj
 /*.booproj
- 
+/.idea*/
 # ============ #
 # OS generated #
 # ============ #
@@ -29,10 +28,6 @@ sysinfo.txt
 ._*
 .Spotlight-V100
 .Trashes
-Icon?
 ehthumbs.db
 [Tt]humbs.db
 [Dd]esktop.ini
-build/*
-*.meta
-*.meta
