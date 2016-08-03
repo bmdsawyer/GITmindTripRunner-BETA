@@ -17,9 +17,6 @@ public class chase : MonoBehaviour {
     public bool playerInSight;                      // Whether or not the player is currently sighted.
     public bool playerOutofSight;                   // Whether player has left the NavMesh
     public GameObject homePoint;
-    public AudioSource chaseAudio;
-    public AudioSource swordAudio;
-
     // Use this for initialization
     void Start()
     {
@@ -29,7 +26,6 @@ public class chase : MonoBehaviour {
         this.tag = "Untagged";
         sphereCollider = GetComponent<SphereCollider>();
         playerOutofSight = false;
-        //audio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -42,10 +38,10 @@ public class chase : MonoBehaviour {
         if (playerOutofSight == false && Vector3.Distance(player.position, this.transform.position) < viewDistance && (angle < viewAngle || pursuing) && chaseTimer < chaseWaitTime && playerInSight)
         {
             // ... and if a raycast towards the player hits something...
-            bool phy1 = Physics.Raycast(transform.position + transform.up, direction.normalized, out hit, viewDistance);
-            bool phy2 = Physics.Raycast(transform.position + (transform.up / 2), direction.normalized, out hit2, viewDistance);
+            Physics.Raycast(transform.position + transform.up, direction.normalized, out hit, viewDistance);
+            Physics.Raycast(transform.position + (transform.up / 2), direction.normalized, out hit2, viewDistance);
             // ... and if the raycast hits the player...
-            if ((phy1 && hit.collider.gameObject == playerObject) || (phy2 && hit2.collider.gameObject == playerObject))
+            if (hit.collider.gameObject == playerObject || hit2.collider.gameObject == playerObject)
             {
                 pursuing = true;
 
@@ -60,16 +56,10 @@ public class chase : MonoBehaviour {
                     //this.transform.Translate(0, 0, 0.05f);
                     anim.SetBool("isWalking", true);
                     anim.SetBool("isAttacking", false);
-                    if(chaseAudio.isPlaying == false)
-                        chaseAudio.Play();
-                    if(swordAudio.isPlaying)
-                        swordAudio.Stop();
                 }
                 else
                 {
                     Debug.Log("Attack!");
-                    if (swordAudio.isPlaying == false)
-                        swordAudio.Play();
                     this.tag = "Obstacle";
                     nav.Stop();
                     anim.SetBool("isAttacking", true);
@@ -79,8 +69,6 @@ public class chase : MonoBehaviour {
             }
             else
             {
-                if (swordAudio.isPlaying == true)
-                    swordAudio.Stop();
                 chaseTimer += Time.deltaTime;
                 nav.SetDestination(player.position);
                     
@@ -96,8 +84,6 @@ public class chase : MonoBehaviour {
             // If the timer exceeds the wait time...
             if (chaseTimer >= chaseWaitTime)
             {
-                if(chaseAudio.isPlaying)
-                    chaseAudio.Stop();
                 nav.SetDestination(homePoint.transform.position);
                 float dist =nav.remainingDistance;
                 if (dist != Mathf.Infinity && nav.pathStatus == NavMeshPathStatus.PathComplete && nav.remainingDistance == 0)
